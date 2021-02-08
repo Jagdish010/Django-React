@@ -6,20 +6,22 @@ class EditableTagGroup extends React.Component {
 	constructor(props) {
 		super(props);
 
+		const tags = (typeof props.value === 'undefined' ? props.defaultValue : props.value) || [];
+
 		this.state = {
-			tags: this.props.data,
+			tags,
 			inputVisible: false,
 			inputValue: '',
 			editInputIndex: -1,
 			editInputValue: '',
 		};
 	}
- 
 
 	handleClose = removedTag => {
 		const tags = this.state.tags.filter(tag => tag !== removedTag);
-		console.log(tags);
 		this.setState({ tags });
+
+		this.props.onChange(tags);
 	};
 
 	showInput = () => {
@@ -36,7 +38,9 @@ class EditableTagGroup extends React.Component {
 		if (inputValue && tags.indexOf(inputValue) === -1) {
 			tags = [...tags, inputValue];
 		}
-		console.log(tags);
+
+		this.props.onChange(tags);
+
 		this.setState({
 			tags,
 			inputVisible: false,
@@ -95,7 +99,7 @@ class EditableTagGroup extends React.Component {
 						<Tag
 							className="edit-tag"
 							key={tag}
-							closable={index !== 0}
+							closable={index !== -1}
 							onClose={() => this.handleClose(tag)}
 						>
 							<span

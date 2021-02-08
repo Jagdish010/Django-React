@@ -70,11 +70,11 @@ class CustomForm extends Component {
 	// 	console.log('Success:', this.state);
 	// };
 
-	onFinish = (values, requestType, userID) => {
+	onFinish = (values, requestType, articleID) => {
 		this.setState({
 			article: values
 		});
-		console.log(this.state.article, requestType, userID);
+		console.log(this.state.article, requestType, articleID);
 
 		switch(requestType) {
 			case 'post':
@@ -83,7 +83,7 @@ class CustomForm extends Component {
 					.catch(err => console.error(err));
 			
 			case 'put':
-				return axios.post(`http://localhost:8080/api/article/${userID}/`, this.state)
+				return axios.post(`http://localhost:8080/api/article/${articleID}/`, this.state)
 					.then(res => console.log(res))
 					.catch(err => console.error(err));
 			
@@ -94,7 +94,7 @@ class CustomForm extends Component {
 		return (
 			<Form 
 			initialValues={this.state.article}
-			onFinish={ (values) => this.onFinish(values, this.props.requestType, this.props.match.params.userID) } >
+			onFinish={ (values) => this.onFinish(values, this.props.requestType, this.props.match.params.articleID) } >
 				<FormItem
 				label="Title"
 				name="title"
@@ -179,8 +179,8 @@ class CustomForm extends Component {
 					<Input.Password placeholder="with input password" />
 				</FormItem> */}
 
-				<FormItem>
-					<EditableTagGroup data={this.state.article.tag} ></EditableTagGroup>
+				<FormItem name="tag">
+					<EditableTagGroup/>
 				</FormItem>
 		
 				<FormItem>
